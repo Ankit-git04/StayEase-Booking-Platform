@@ -1,0 +1,84 @@
+  <%- include('../partials/head', { pageTitle: 'Host Home' }) %>
+  </head>
+  <body class="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <!-- Navbar --> 
+    <%- include('../partials/Navbar') %>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      
+      <!-- HomesList Section -->
+      <section class="p-8 bg-white rounded-2xl shadow-lg">
+        
+        <!-- Header with Title and Add Button -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-8 pb-6 border-b border-gray-200">
+          <h3 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-0">
+            Your Registered Homes
+          </h3>
+          <a href="/host/add-home" class="inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 shadow-md">
+            ➕ Add New Home
+          </a>
+        </div>
+
+              <% if (registeredHomes.length === 0) { %>
+          <!-- Empty State -->
+          <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-16 text-center">
+            <div class="mb-6">
+              <svg class="w-28 h-28 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-3m0 0l7-4 7 4M5 9v7a1 1 0 001 1h12a1 1 0 001-1V9m-9 16l-7-4m0 0V5a1 1 0 011-1h12a1 1 0 011 1v7m-9 4l7 4"></path>
+              </svg>
+            </div>
+            <h4 class="text-3xl font-bold text-gray-800 mb-3">No Homes Listed Yet</h4>
+            <p class="text-gray-600 text-lg mb-8">Start earning today by listing your first property. It only takes a few minutes!</p>
+            <a href="/host/add-home" class="inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg transition transform hover:scale-105 shadow-md">
+              List Your First Home
+            </a>
+          </div>
+        <% } else { %>
+          <!-- Homes Grid -->
+          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% registeredHomes.forEach(home => { %>
+              <li class="p-6 bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                
+                <!-- Image Section -->
+                <div class="relative overflow-hidden bg-gray-200 h-48">
+                  <img src="<%= home.homeImage %>" 
+                       alt="<%= home.homeName %>" 
+                       class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                  <div class="absolute top-3 right-3 bg-amber-500 text-black px-3 py-1 rounded-full text-sm font-semibold">
+                    $<%= home.price %>/night
+                  </div>
+                </div>
+                
+                <!-- Content Section -->
+                <div class="p-5">
+                  <h4 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">
+                    <%= home.homeName %>
+                  </h4>
+
+                  <p class="text-gray-600 text-sm mb-4 line-clamp-1">
+                    📍 <%= home.location %>
+                  </p>
+
+                  <!-- Action Buttons -->
+                    <div class=" flex sm:flex-col gap-8">
+                      <form action="/host/edit-home/<%= home._id %>" method="GET" class="flex-1">
+                        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-black font-semibold py-2 rounded-lg transition transform hover:scale-105">
+                          ✏️ Edit
+                        </button>
+                      </form>
+                     
+                      <form action="/host/delete-home/<%= home._id %>" method="POST" class="flex-1">
+                        <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition transform hover:scale-105">
+                          🗑️ Delete
+                        </button>
+                      </form>
+                    </div>
+                </div>
+                
+              </li>
+            <% }) %>
+          </ul>        <% } %>
+
+      </section>
+    </main>
+  </body>
+</html>

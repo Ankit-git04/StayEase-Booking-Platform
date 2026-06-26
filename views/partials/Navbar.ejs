@@ -1,0 +1,71 @@
+<header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+
+    <h1 class="text-3xl font-black text-red-500">StayEase</h1>
+
+    <!-- Desktop Menu -->
+   <nav class="hidden sm:flex gap-6 text-gray-600 font-medium">
+  <a href="/">Home</a>
+
+  <% if (isLoggedIn) { %>
+    <a href="/bookings">My Bookings</a>
+    <a href="/favourites">Favourites</a>
+
+    <% if (user && user.userType === 'host') { %>
+      <a href="/host">Host Home</a>
+      <a href="/host/add-home">Add Homes</a>
+      <a href="/host/bookings">Received Bookings</a>
+    <% } %>
+
+    <form action="/auth/logout" method="POST" class="inline">
+      <button type="submit">Logout</button>
+    </form>
+  <% } else { %>
+    <a href="/auth/signup">Sign Up</a>
+    <a href="/auth/login">Login</a>
+  <% } %>
+</nav>
+
+    <!-- Mobile Hamburger Button -->
+    <button
+      id="menuBtn"
+      class="sm:hidden text-3xl text-gray-700"
+    >
+      ☰
+    </button>
+
+  </div>
+
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobileMenu"
+    class="hidden sm:hidden bg-white border-t border-gray-200"
+  >
+    <div class="flex flex-col p-4 space-y-3">
+
+      <a href="/">Home</a>
+
+      <% if (isLoggedIn) { %>
+        <a href="/bookings">My Bookings</a>
+        <a href="/favourites">Favourites</a>
+
+        <% if (user && user.userType === 'host') { %>
+          <a href="/host">Host Home</a>
+          <a href="/host/add-home">Add Homes</a>
+          <a href="/host/bookings">Received Bookings</a>
+        <% } %>
+
+        <form action="/auth/logout" method="POST">
+          <button type="submit">Logout</button>
+        </form>
+
+      <% } else { %>
+        <a href="/auth/signup">Sign Up</a>
+        <a href="/auth/login">Login</a>
+      <% } %>
+
+    </div>
+  </div>
+  <%- include('../partials/toast') %>
+</header>

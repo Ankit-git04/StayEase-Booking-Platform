@@ -1,0 +1,209 @@
+<%- include('../partials/head', { pageTitle: 'Book ' + home.homeName }) %>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Navbar -->
+  <%- include('../partials/Navbar') %>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+ <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      
+      <!-- Booking Form Section -->
+     <div class="md:col-span-5">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Complete Your Booking</h1>
+          <p class="text-gray-600 mb-6">Fill in your details to confirm the reservation</p>
+
+          <form action="/bookings/<%= home._id %>" method="POST" id="bookingForm" class="space-y-4">
+            
+            <!-- Check-in Date -->
+            <div>
+              <label for="checkInDate" class="block text-sm font-semibold text-gray-700 mb-2">Check-in Date</label>
+              <input 
+                type="date" 
+                id="checkInDate" 
+                name="checkInDate" 
+                required
+                min="<%= new Date().toISOString().split('T')[0] %>"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+              <p class="text-xs text-gray-500 mt-1">Select your arrival date</p>
+            </div>
+
+            <!-- Check-out Date -->
+            <div>
+              <label for="checkOutDate" class="block text-sm font-semibold text-gray-700 mb-2">Check-out Date</label>
+              <input 
+                type="date" 
+                id="checkOutDate" 
+                name="checkOutDate" 
+                required
+                min="<%= new Date().toISOString().split('T')[0] %>"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+              <p class="text-xs text-gray-500 mt-1">Select your departure date</p>
+            </div>
+
+            <!-- Number of People -->
+            <div>
+              <label for="numberOfPeople" class="block text-sm font-semibold text-gray-700 mb-2">Number of People</label>
+              <input 
+                type="number" 
+                id="numberOfPeople" 
+                name="numberOfPeople" 
+                value="1"
+                min="1" 
+                max="10"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+              <p class="text-xs text-gray-500 mt-1">Select the number of guests</p>
+            </div>
+
+            <!-- Special Requests -->
+            <div>
+              <label for="specialRequests" class="block text-sm font-semibold text-gray-700 mb-2">Special Requests (Optional)</label>
+              <textarea 
+                id="specialRequests" 
+                name="specialRequests" 
+                rows="3"
+                placeholder="Any special requests or requirements..."
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition text-sm"
+            >
+              Confirm Booking
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Price Summary Section -->
+     <div class="md:col-span-7">
+        <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">Price Details</h2>
+
+          <!-- Property Details -->
+          <div class="mb-6 pb-6 border-b border-gray-200">
+            <img 
+              src="<%= home.homeImage %>" 
+              alt="<%= home.homeName %>" 
+              class="w-full h-32 object-cover rounded-lg mb-3"
+            />
+            <h3 class="text-lg font-semibold text-gray-900"><%= home.homeName %></h3>
+            <p class="text-sm text-gray-600">📍 <%= home.location %></p>
+          </div>
+
+          <!-- Price Breakdown -->
+          <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Price per night</span>
+              <span class="font-semibold text-gray-900" id="pricePerNight">$<%= home.price %></span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Number of nights</span>
+              <span class="font-semibold text-gray-900" id="numberOfNights">0</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Subtotal</span>
+              <span class="font-semibold text-gray-900" id="subtotal">$0</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-600">Service fee (10%)</span>
+              <span class="font-semibold text-gray-900" id="serviceFee">$0</span>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="flex justify-between text-lg font-bold">
+            <span class="text-gray-900">Total</span>
+            <span class="text-red-500" id="totalPrice">$0</span>
+          </div>
+
+          <!-- Info Alert -->
+          <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p class="text-xs text-blue-800">
+              <strong>Note:</strong> Prices are per night and may vary based on season and demand.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </main>
+
+  <!-- Price Calculation Script -->
+  <script>
+    const basePrice = <%= home.price %>;
+    const checkInInput = document.getElementById('checkInDate');
+    const checkOutInput = document.getElementById('checkOutDate');
+    const numberOfPeopleInput = document.getElementById('numberOfPeople');
+    const pricePerNightElement = document.getElementById('pricePerNight');
+    const numberOfNightsElement = document.getElementById('numberOfNights');
+    const subtotalElement = document.getElementById('subtotal');
+    const serviceFeeElement = document.getElementById('serviceFee');
+    const totalPriceElement = document.getElementById('totalPrice');
+
+    function calculatePrice() {
+      const checkInDate = new Date(checkInInput.value);
+      const checkOutDate = new Date(checkOutInput.value);
+      const numberOfPeople = parseInt(numberOfPeopleInput.value) || 1;
+
+      // Validate dates
+      if (!checkInInput.value || !checkOutInput.value) {
+        return;
+      }
+
+      if (checkOutDate <= checkInDate) {
+        alert('Check-out date must be after check-in date');
+        checkOutInput.value = '';
+        return;
+      }
+
+      // Calculate number of nights
+      const timeDifference = checkOutDate - checkInDate;
+      const numberOfNights = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+      // Base price per person increases by 15% for 2+ people
+      let pricePerPerson = basePrice;
+      if (numberOfPeople > 1) {
+        pricePerPerson = basePrice + (basePrice * 0.15 * (numberOfPeople - 1));
+      }
+
+      // Calculate subtotal
+      const subtotal = numberOfNights * pricePerPerson;
+
+      // Calculate service fee (10%)
+      const serviceFee = subtotal * 0.10;
+
+      // Calculate total
+      const total = subtotal + serviceFee;
+
+      // Update UI
+      numberOfNightsElement.textContent = numberOfNights;
+      pricePerNightElement.textContent = `$${pricePerPerson.toFixed(2)}`;
+      subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+      serviceFeeElement.textContent = `$${serviceFee.toFixed(2)}`;
+      totalPriceElement.textContent = `$${total.toFixed(2)}`;
+    }
+
+    // Add event listeners
+    checkInInput.addEventListener('change', calculatePrice);
+    checkOutInput.addEventListener('change', calculatePrice);
+    numberOfPeopleInput.addEventListener('change', calculatePrice);
+
+    // Validate check-out date
+    checkOutInput.addEventListener('change', function() {
+      const checkInDate = new Date(checkInInput.value);
+      const checkOutDate = new Date(checkOutInput.value);
+      if (checkOutDate <= checkInDate) {
+        alert('Check-out date must be after check-in date');
+        this.value = '';
+      }
+    });
+   </script>
+</body>
+</html>

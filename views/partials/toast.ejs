@@ -1,0 +1,41 @@
+<% if (typeof message !== 'undefined' && message) { %>
+  <% const messageMap = {
+        'already-favourite': {
+          text: 'This home is already in your favourites.',
+          level: 'warning'
+        },
+        'already-booked': {
+          text: 'This home is already booked for the selected dates.',
+          level: 'warning'
+        },
+        'invalid-dates': {
+          text: 'Check-out date must be after check-in date.',
+          level: 'error'
+        },
+        'login-required': {
+          text: 'Please log in to continue.',
+          level: 'info'
+        }
+      };
+      const toastData = messageMap[message] || { text: message, level: 'info' };
+      const bgClasses = {
+        success: 'bg-green-100 border-green-400 text-green-800',
+        warning: 'bg-yellow-100 border-yellow-400 text-yellow-800',
+        error: 'bg-red-100 border-red-400 text-red-800',
+        info: 'bg-blue-100 border-blue-400 text-blue-800'
+      };
+  %>
+  <div id="toast" class="fixed top-5 right-5 z-[9999] rounded-lg border px-4 py-3 shadow-lg <%= bgClasses[toastData.level] %>">
+    <div class="flex items-start gap-3">
+      <div class="flex-1 text-sm leading-6"><%= toastData.text %></div>
+      <button type="button" class="ml-2 font-bold text-current" onclick="document.getElementById('toast')?.remove()">&times;</button>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const toast = document.getElementById('toast');
+      if (toast) toast.remove();
+    }, 3000);
+  </script>
+<% } %>

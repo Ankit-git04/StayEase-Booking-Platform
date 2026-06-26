@@ -1,0 +1,59 @@
+<%- include('../partials/head', { pageTitle: pageTitle }) %>
+  </head>
+  <body class="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <%- include('../partials/Navbar') %>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section class="bg-white rounded-3xl shadow-lg p-8 sm:p-12 mb-10">
+        <div class="flex flex-col gap-4 text-center">
+          <p class="text-sm uppercase tracking-[0.3em] text-red-500 font-semibold">Search results</p>
+          <h1 class="text-4xl sm:text-5xl font-bold text-gray-900">Homes in <span class="text-red-500"><%= requiredLocation ? displayLocation : 'your area' %></span></h1>
+          <p class="text-gray-600 max-w-2xl mx-auto">Browse homes available near your searched location. If nothing matches, we’ll let you know right away.</p>
+        </div>
+        <form action="/search" method="GET" class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <input
+            type="text"
+            name="requiredLocation"
+            value="<%= requiredLocation %>"
+            placeholder="Search by city, neighborhood, or destination"
+            class="w-full sm:w-auto flex-1 px-6 py-3 rounded-full border border-gray-300 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 transition"
+          />
+          <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105">Search</button>
+        </form>
+      </section>
+
+      <section class="space-y-10">
+        <% if (homes && homes.length > 0) { %>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% homes.forEach(home => { %>
+              <article class="bg-white rounded-3xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <a href="/Homedetails/<%= home._id %>" class="block overflow-hidden">
+                  <img src="<%= home.homeImage %>" alt="<%= home.homeName %>" class="w-full h-56 object-cover transition duration-300 hover:scale-105" />
+                </a>
+                <div class="p-6 flex flex-col gap-4">
+                  <div>
+                    <p class="text-sm text-gray-500 uppercase tracking-wide">📍 <%= home.location %></p>
+                    <a href="/Homedetails/<%= home._id %>" class="block mt-2 text-2xl font-semibold text-gray-900 hover:text-red-500 transition"><%= home.homeName %></a>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <p class="text-xl font-bold text-red-600">$<%= home.price %></p>
+                    <form action="/bookings/form/<%= home._id %>" method="GET" class="min-w-[120px]">
+                      <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-full transition">Book Now</button>
+                    </form>
+                  </div>
+                </div>
+              </article>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="bg-white rounded-3xl shadow-lg p-12 text-center">
+            <div class="mx-auto mb-6 h-24 w-24 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-4xl">!</div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">No homes available</h2>
+            <p class="text-gray-600 mb-6">We couldn’t find any homes matching "<span class="font-semibold text-gray-900"><%= requiredLocation %></span>".</p>
+            <p class="text-gray-500 mb-8">Try a different location or broaden your search to see more options.</p>
+            <a href="/" class="inline-flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition">Browse all homes</a>
+          </div>
+        <% } %>
+      </section>
+    </main>
+  </body>
+</html>

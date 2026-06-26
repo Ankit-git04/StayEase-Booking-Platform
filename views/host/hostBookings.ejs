@@ -1,0 +1,59 @@
+<%- include('../partials/head', { pageTitle: 'Host Bookings' }) %>
+</head>
+<body class="bg-gradient-to-b from-gray-100 to-white min-h-screen">
+  <%- include('../partials/Navbar') %>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-8 text-center">
+      <p class="text-sm uppercase tracking-[0.3em] text-red-500 font-semibold">Host dashboard</p>
+      <h1 class="mt-2 text-4xl font-bold text-gray-900">Your Bookings</h1>
+      <p class="mt-3 text-gray-600 max-w-2xl mx-auto">Review all guest reservations and booking details in one place. Manage upcoming stays and keep track of your home performance.</p>
+    </div>
+
+    <% if (!bookings || bookings.length === 0) { %>
+      <div class="rounded-3xl border border-dashed border-gray-300 bg-white/80 p-10 text-center shadow-sm">
+        <p class="text-2xl font-semibold text-gray-900">No bookings yet</p>
+        <p class="mt-4 text-gray-600">Once guests book your home, the reservation details will appear here.</p>
+      </div>
+    <% } else { %>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <% bookings.forEach(booking => { %>
+          <article class="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-sm uppercase tracking-[0.25em] text-red-500 font-semibold">Booking</p>
+                <h2 class="mt-2 text-xl font-bold text-gray-900"><%= booking.homeId.homeName %></h2>
+                <p class="mt-2 text-sm text-gray-500">Booked by <span class="font-semibold text-gray-800"><%= booking.userId.username %></span></p>
+              </div>
+              <span class="rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-700">$<%= booking.totalPrice %></span>
+            </div>
+
+            <div class="mt-6 space-y-3 text-sm text-gray-600">
+              <div class="rounded-2xl bg-gray-50 p-4">
+                <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Guest</p>
+                <p class="mt-1 font-medium text-gray-900"><%= booking.userId.username %></p>
+                <p class="text-xs text-gray-500"><%= booking.userId.email %></p>
+              </div>
+              <div class="rounded-2xl bg-gray-50 p-4">
+                <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Stay dates</p>
+                <p class="mt-1 text-gray-900"><%= booking.checkInDate.toDateString() %> — <%= booking.checkOutDate.toDateString() %></p>
+              </div>
+              <div class="rounded-2xl bg-gray-50 p-4">
+                <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Guests</p>
+                <p class="mt-1 text-gray-900"><%= booking.numberOfGuests || '1' %> guest<%= booking.numberOfGuests > 1 ? 's' : '' %></p>
+              </div>
+            </div>
+
+            <% if (booking.specialRequests) { %>
+              <div class="mt-6 rounded-2xl bg-blue-50 p-4 border border-blue-100 text-blue-900">
+                <p class="text-xs uppercase tracking-[0.2em] font-semibold">Guest note</p>
+                <p class="mt-2 text-sm"><%= booking.specialRequests %></p>
+              </div>
+            <% } %>
+          </article>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+</body>
+</html>

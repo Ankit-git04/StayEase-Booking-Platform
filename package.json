@@ -1,0 +1,37 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "@tailwindcss/postcss": "^4.2.2",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "connect-mongodb-session": "^5.0.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "fuse.js": "^7.4.2",
+    "mongodb": "^7.3.0",
+    "mongoose": "^9.7.1",
+    "multer": "^2.2.0",
+    "mysql2": "^3.22.5",
+    "nodemon": "^3.1.14"
+  },
+  "name": "StayEase",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "tailwindcss": "tailwindcss -i ./public/input.css -o ./public/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2"
+  }
+}

@@ -1,0 +1,93 @@
+  <%- include('../partials/head', { pageTitle: 'Homes' }) %>
+  </head>
+  <body class="bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <!-- Navbar --> 
+    <%- include('../partials/Navbar') %>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+       
+    
+      <!-- Hero Section -->
+      <section class="bg-white rounded-3xl shadow-lg p-8 sm:p-12 mb-12">
+        <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Find your next stay</h2>
+        <p class="text-xl text-gray-600 mb-8">Discover unique homes and experiences around the world</p>
+        <form action="/search" method="GET" class="flex flex-col sm:flex-row gap-4">
+          <input type="text" name="requiredLocation" placeholder="Where are you going?" class="flex-1 px-6 py-3 rounded-full border border-gray-300 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200 transition" />
+          <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105">Search</button>
+        </form>
+      </section>
+
+      <!--  HomesList Section -->
+     <section class="p-6 bg-gray-100">
+
+  <h3 class="text-2xl sm:text-3xl font-bold mb-6 text-center">
+    Registered Homes
+  </h3>
+
+  <% if (user && user.userType === 'host' && registeredHomes && registeredHomes.length === 0) { %>
+    <!-- Empty State -->
+    <div class="bg-white rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto">
+      <div class="mb-6">
+        <svg class="w-24 h-24 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-3m0 0l7-4 7 4M5 9v7a1 1 0 001 1h12a1 1 0 001-1V9m-9 16l-7-4m0 0V5a1 1 0 011-1h12a1 1 0 011 1v7m-9 4l7 4"></path>
+        </svg>
+      </div>
+      <h4 class="text-2xl font-bold text-gray-800 mb-3">No Homes Listed Yet</h4>
+      <p class="text-gray-600 text-lg mb-8">Start earning today by listing your property. It only takes a few minutes!</p>
+      <a href="/host/add-home" class="inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg transition transform hover:scale-105">
+        Add Your First Home
+      </a>
+    </div>
+  <% } else { %>
+    <!-- GRID ADDED HERE -->
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+      <% registeredHomes.forEach(home => { %>
+
+        <li class="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 flex flex-col">
+
+          <a href="Homedetails/<%= home._id %>" class="block mb-3">
+            <img src="<%= home.homeImage %>" 
+                 alt="<%= home.homeName %>" 
+                 class="w-full h-40 object-cover rounded-md hover:opacity-80 transition duration-200">
+          </a>
+
+          <a href="Homedetails/<%= home._id %>" class="text-lg font-semibold text-gray-800 hover:text-red-500 transition">
+            <%= home.homeName %>
+          </a>
+
+          <p class="text-gray-500 text-sm">
+            📍 <%= home.location %>
+          </p>
+
+          <p class="text-blue-600 font-bold mb-3">
+            $ <%= home.price %> / night
+          </p>
+
+          <div class="flex gap-1 mt-auto">
+           
+            <a
+                  href="/Homedetails/<%= home._id %>"
+                  class="flex-1 text-center bg-blue-300 hover:bg-green-400 text-gray-800 hover:text-white font-bold py-1 px-2 rounded-lg transition text-xs"
+                >
+                  View Details
+                </a>
+           
+            <form action="/bookings/form/<%= home._id %>" method="GET" class="flex-1">
+              <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-lg transition text-xs">
+                Book Now
+              </button>
+            </form>
+           
+          </div>
+       
+        </li>
+
+      <% }) %>
+
+    </ul>
+  <% } %>
+
+</section>
+    </main>
+  </body>
+</html>

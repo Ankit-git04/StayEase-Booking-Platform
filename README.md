@@ -7,7 +7,7 @@ It is built using Node.js, Express.js, MongoDB, and EJS for server-side renderin
 
  ## Key Features
 
- ### 👤 User Features
+ ###  User Features
 
 - User registration and login system  
 - Secure authentication using sessions / bcrypt  
@@ -16,7 +16,7 @@ It is built using Node.js, Express.js, MongoDB, and EJS for server-side renderin
 - Book a property for selected dates  
 - View booking history  
 
-## 🏠 Property Features
+##  Property Features
 
 - Add new property listings (host feature)  
 - Edit or delete own listings  
@@ -24,7 +24,7 @@ It is built using Node.js, Express.js, MongoDB, and EJS for server-side renderin
 - Add price, location, and description  
 - View all listed properties in a grid layout  
 
-## 📅 Booking System
+##  Booking System
 
 - Select check-in and check-out dates  
 - Prevent duplicate or invalid bookings  
@@ -32,7 +32,7 @@ It is built using Node.js, Express.js, MongoDB, and EJS for server-side renderin
 - Store booking details in MongoDB database  
 
 
-## ⭐ Extra Features
+##  Extra Features
 
 - Favorites / Wishlist system  
 - Flash messages / alerts  
@@ -41,22 +41,22 @@ It is built using Node.js, Express.js, MongoDB, and EJS for server-side renderin
 - Responsive UI design  
 
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
-### 🎨 Frontend
+###  Frontend
 - HTML  
 - CSS / Tailwind CSS  
 - EJS (Embedded JavaScript Templates)  
 
-### ⚙️ Backend
+###  Backend
 - Node.js  
 - Express.js  
 
-### 🗄️ Database
+###  Database
 - MongoDB  
 - Mongoose ODM  
 
-### 🔐 Authentication & Security
+###  Authentication & Security
 
 A secure authentication system has been implemented to ensure safe user access and data protection.
 
@@ -67,7 +67,7 @@ A secure authentication system has been implemented to ensure safe user access a
 - Unauthorized access attempts are redirected to the login page
 
 
-## ⚙️ How to Run the Project Locally
+##  How to Run the Project Locally
 
 Follow these steps to set up and run the project on your local machine.
 
@@ -108,16 +108,16 @@ http://localhost:3000
  
 ![Home Page](Image/stayease_object_workflow_diagram.png)
 
-## 📸 Screenshots
+##  Screenshots
 
-### 🔐 Login Page
+###  Login Page
 ![Login Page](Image/Login.png)
 
-### 🏠 Home Page
+###  Home Page
 ![Home Page](Image/Home.png)
 
-### 🏡 Host Dashboard
+###  Host Dashboard
 ![Host Dashboard](Image/HostDashboard.png)
 
-### 📅 Booking Form
+###  Booking Form
 ![Booking Form](Image/BookingForm.png)
